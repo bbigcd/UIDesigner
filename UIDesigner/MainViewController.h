@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MainViewController.h
 //  UIDesigner
 //
 //  Created by chendi on 2017/6/19.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface MainViewController : UIViewController
 
 @end
-
