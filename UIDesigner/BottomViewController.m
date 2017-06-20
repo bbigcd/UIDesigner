@@ -53,6 +53,7 @@
 
 - (void)initSubView
 {
+    // 这里可以换成VC 通过addChilVC的方式 解耦
     UIView *leftView = [[UIView alloc] init];
     leftView.backgroundColor = [UIColor cyanColor];
     leftView.frame = (CGRect){20, 0, kScreenWidth - 40, kScreenHeight - 300};

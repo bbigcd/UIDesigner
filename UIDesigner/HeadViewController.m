@@ -83,8 +83,9 @@
     CGFloat offsetX = scrollView.contentOffset.x;
     NSInteger index = offsetX / width;
 
+    // 发送通知 头部的当前的展示图发送给bottomVC
     NSString *indexString = [NSString stringWithFormat:@"%ld",index];
-    NSNotification * notice = [NSNotification notificationWithName:@"test" object:nil userInfo:@{@"currentIndex":indexString}];
+    NSNotification *notice = [NSNotification notificationWithName:@"test" object:nil userInfo:@{@"currentIndex":indexString}];
     [[NSNotificationCenter defaultCenter] postNotification:notice];
 }
 

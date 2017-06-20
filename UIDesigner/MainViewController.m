@@ -14,7 +14,6 @@
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
 
-
 @interface MainViewController ()
 
 @end
@@ -24,7 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view setBackgroundColor:[UIColor colorWithRed:0.10 green:0.63 blue:0.93 alpha:1.00]];
     
     HeadViewController *headVC = [[HeadViewController alloc] init];
     [self addChildViewController:headVC];
