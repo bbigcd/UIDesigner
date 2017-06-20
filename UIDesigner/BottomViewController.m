@@ -16,6 +16,7 @@
 @interface BottomViewController ()<UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, assign) NSInteger currentIndex;
 
 @end
 
@@ -27,6 +28,8 @@
     self.view.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.scrollView];
     [self initSubView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBottomViewWithCurrentPage:) name:@"test" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,6 +45,7 @@
         _scrollView.contentSize = CGSizeMake(kScreenWidth * kScrollViewItemNumber,
                                              kScreenHeight - 300);
         _scrollView.pagingEnabled = YES;
+        _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.delegate = self;
     }
     return _scrollView;
@@ -61,6 +65,37 @@
     
 }
 
+- (void)showBottomViewWithCurrentPage:(NSNotification *)notifition
+{
+    NSDictionary *dic = [notifition userInfo];
+    self.currentIndex = [dic[@"currentIndex"] integerValue];
+    [self scrollViewDidEndScrollingAnimation:_scrollView];
+    
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    CGPoint offset = self.scrollView.contentOffset;
+    offset.x = self.currentIndex * self.scrollView.frame.size.width;
+    [self.scrollView setContentOffset:offset animated:NO];
+}
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //调用上面的方法
+    [self scrollViewDidEndScrollingAnimation:scrollView];
+}
+
+/**
+ *  只要scrollView在滚动，就会调用该协议方法
+ */
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+}
 /*
 #pragma mark - Navigation
 

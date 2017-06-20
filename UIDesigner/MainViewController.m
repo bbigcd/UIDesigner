@@ -30,11 +30,13 @@
     [self addChildViewController:headVC];
     headVC.view.frame = (CGRect){0, 0, kScreenWidth, 300};
     [self.view addSubview:headVC.view];
+    [headVC didMoveToParentViewController:self];
     
     BottomViewController *bottomVC = [[BottomViewController alloc] init];
     [self addChildViewController:bottomVC];
     bottomVC.view.frame = (CGRect){0, 300, kScreenWidth, kScreenHeight - 300};
     [self.view addSubview:bottomVC.view];
+    [bottomVC didMoveToParentViewController:self];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -7,6 +7,7 @@
 //
 
 #import "HeadViewController.h"
+#import "BottomViewController.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -16,6 +17,9 @@
 @interface HeadViewController ()<UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) BottomViewController *bottomVC;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) BOOL show;
 
 @end
 
@@ -27,6 +31,9 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithRed:0.10 green:0.63 blue:0.93 alpha:1.00];
     [self.view addSubview:self.scrollView];
+    self.bottomVC = [[BottomViewController alloc] init];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(scrollHeadView) userInfo:nil repeats:YES];
+    _show = YES;
     [self initSubView];
 }
 
@@ -58,9 +65,54 @@
     
 }
 
+- (void)scrollHeadView
+{
+    if(_show){
+        [self.scrollView setContentOffset:CGPointMake(kScreenWidth, 0) animated:YES];
+    }else{
+        [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
+    _show = !_show;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    CGFloat width = scrollView.frame.size.width;
+    CGFloat offsetX = scrollView.contentOffset.x;
+    NSInteger index = offsetX / width;
+
+    NSString *indexString = [NSString stringWithFormat:@"%ld",index];
+    NSNotification * notice = [NSNotification notificationWithName:@"test" object:nil userInfo:@{@"currentIndex":indexString}];
+    [[NSNotificationCenter defaultCenter] postNotification:notice];
+}
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //调用上面的方法
+    [self scrollViewDidEndScrollingAnimation:scrollView];
+}
+
+/**
+ *  只要scrollView在滚动，就会调用该协议方法
+ */
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_timer invalidate];//销毁计时器
+    _timer = nil;
 }
 
 /*
